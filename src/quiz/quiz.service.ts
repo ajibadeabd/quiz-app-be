@@ -82,7 +82,6 @@ export class QuizService {
     const quiz = await this.getQuiz(quizCode, '-questions.correctAnswer');
 
     const isQuizTaken = await this.getQuizTaken({ quizCode, user: userId });
-    console.log({ isQuizTaken });
     if (!isQuizTaken) {
       this.quizTaken.create({
         user: userId,
@@ -137,7 +136,6 @@ export class QuizService {
     return { correctAnswer, point };
   }
   private async isQuizTimeOut(isQuizTaken, quiz: Quiz) {
-    console.log(isQuizTaken);
     const quizTime = quiz.duration * 1000;
     const timeStarted = new Date(isQuizTaken.createdAt).getTime();
     if (timeStarted + quizTime < Date.now()) {
