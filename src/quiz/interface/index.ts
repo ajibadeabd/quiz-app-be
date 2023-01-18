@@ -7,6 +7,7 @@ import {
   ValidateNested,
   ArrayMinSize,
 } from 'class-validator';
+import { Types } from 'mongoose';
 
 export class IQuestion {
   @ApiProperty()
@@ -31,7 +32,7 @@ export class IQuestion {
 
   @ApiProperty()
   @IsNumber()
-  point: string;
+  point: number;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -56,7 +57,7 @@ export class IQuiz {
   @Type(() => IQuestion)
   @IsArray()
   @ArrayMinSize(2)
-  questions: [IQuestion];
+  questions: IQuestion[];
 }
 
 export class getQuizParams {

@@ -5,16 +5,23 @@ import { IQuestion } from '../interface';
 
 export type QuizDocument = Quiz & Document;
 
-@Schema()
+@Schema({
+  id: true,
+  timestamps: {
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+  },
+})
 export class Quiz {
   @Prop()
   name: string;
 
   @Prop({
-    type: Array<IQuestion>,
+    // type: Array<IQuestion & { id: string }>,
+    type: Array<object>,
     required: true,
   })
-  questions: [IQuestion];
+  questions: any;
 
   @Prop({
     type: String,
