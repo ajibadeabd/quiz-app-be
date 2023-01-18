@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import { Document } from 'mongoose';
+import { IQuestion } from '../interface';
 
 export type QuizDocument = Quiz & Document;
 
@@ -9,11 +10,26 @@ export class Quiz {
   @Prop()
   name: string;
 
-  @Prop()
-  age: number;
+  @Prop({
+    type: Array<IQuestion>,
+    required: true,
+  })
+  questions: [IQuestion];
 
-  @Prop()
-  breed: string;
+  @Prop({
+    type: String,
+    ref: 'User',
+  })
+  owner: string;
+
+  @Prop({
+    type: Number,
+  })
+  duration: number;
+  @Prop({
+    type: String,
+  })
+  quizCode: string;
 }
 
-export const CatSchema = SchemaFactory.createForClass(Quiz);
+export const QuizSchema = SchemaFactory.createForClass(Quiz);

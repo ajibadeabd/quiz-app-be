@@ -1,24 +1,34 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Param,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Quiz } from './entity/quiz.schema';
+import { getQuizParams, IQuiz } from './interface';
 import { QuizService } from './quiz.service';
 
-@Controller()
+@Controller('quiz')
 export class QuizController {
   constructor(private readonly quizService: QuizService) {}
 
-  @Get()
-  getQuiz(): string {
-    return this.quizService.getHello();
+  @UseGuards(JwtAuthGuard)
+  @Get('/:quizCode')
+  getQuiz(@Param() data: getQuizParams): Promise<Quiz> {
+    return this.quizService.getQuiz(data.quizCode);
   }
-  @Get()
-  getAllQuiz(): string {
-    return this.quizService.getHello();
+  @UseGuards(JwtAuthGuard)
+  @Get('/')
+  getAllQuiz(@Req() request): Promise<Quiz[]> {
+    return this.quizService.getQuizzes(request.user._id);
   }
-  @Get()
-  createQuiz(): string {
-    return this.quizService.getHello();
-  }
-  @Get()
-  deleteQuiz(): string {
-    return this.quizService.getHello();
+  @UseGuards(JwtAuthGuard)
+  @Post('/')
+  createQuiz(@Body() data: IQuiz, @Req() request): Promise<Quiz> {
+    return this.quizService.createQuiz(data, request.user._id);
   }
 }

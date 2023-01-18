@@ -1,19 +1,16 @@
-import { Controller, Post, Body, Get, Req } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { User, UserDocument } from './entity/user.schema';
-import { IUser } from './interface';
 import { UserService } from './user.service';
 import { Request } from 'express';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  createUser(@Body() body: IUser): Promise<User> {
-    return this.userService.createUser(body);
-  }
+  @UseGuards(JwtAuthGuard)
   @Get()
   getUser(@Req() request: Request & { user: UserDocument }): Promise<User> {
-    return this.userService.getUser({ _id: request.user._id });
+    return this.userService._getUser({ _id: request.user._id });
   }
 }

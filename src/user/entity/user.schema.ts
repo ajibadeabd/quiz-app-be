@@ -19,7 +19,7 @@ export class User {
   password: string;
 
   @Prop({
-    type: mongooseSchema.Types.ObjectId,
+    type: [mongooseSchema.Types.ObjectId],
     ref: 'Quiz',
     required: false,
     default: [],
